@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · Traffic Violation Logger{% endblock %}
+
+{% block content %}
+<div class="dashboard-hero d-flex flex-wrap align-items-end justify-content-between gap-3 mb-4 fade-rise">
+  <div class="d-flex align-items-center gap-3">
+    <div class="hero-badge" aria-hidden="true">
+      <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 2 L34 8 V19 C34 28 28 34 20 38 C12 34 6 28 6 19 V8 Z" fill="#ffc42b" stroke="#191c20" stroke-width="1.5"></path>
+        <path d="M20 9 l2.6 5.4 5.9.6-4.4 4 1.3 5.9L20 22l-5.4 3 1.3-5.9-4.4-4 5.9-.6Z" fill="#191c20"></path>
+      </svg>
+      <span class="hero-badge-shine"></span>
+    </div>
+    <div>
+      <div class="section-eyebrow">Patrol Desk</div>
+      <h2 class="mb-0">Dashboard</h2>
+      <div class="text-muted">Quick overview of every challan issued</div>
+    </div>
+  </div>
+
+  <div class="control-cluster">
+    <div class="signal-tower" aria-hidden="true">
+      <span class="signal-lamp lamp-red"></span>
+      <span class="signal-lamp lamp-yellow"></span>
+      <span class="signal-lamp lamp-green"></span>
+    </div>
+
+    <div class="siren-unit" aria-hidden="true">
+      <div class="siren-dome-wrap">
+        <div class="siren-dome"></div>
+      </div>
+      <div class="siren-base"></div>
+      <div class="stat-label">On Patrol</div>
+    </div>
+  </div>
+
+  <div class="patrol-strip w-100" aria-hidden="true">
+    <div class="patrol-car">
+      <svg width="56" height="24" viewBox="0 0 64 28" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 20 Q4 12 12 11 L20 11 Q24 4 34 4 L46 4 Q52 4 54 11 L58 11 Q62 11 62 16 L62 20 Z" fill="#f5f5f5" stroke="#191c20" stroke-width="1.2"></path>
+        <path d="M24 11 L27 6 L44 6 L47 11 Z" fill="#8fb8e0" stroke="#191c20" stroke-width="1"></path>
+        <line x1="36" y1="11" x2="36" y2="20" stroke="#191c20" stroke-width="1"></line>
+        <rect x="4" y="16" width="58" height="3" fill="#2b6fe6" opacity="0.85"></rect>
+        <circle cx="16" cy="21" r="4" fill="#191c20"></circle>
+        <circle cx="16" cy="21" r="1.6" fill="#9aa0a6"></circle>
+        <circle cx="50" cy="21" r="4" fill="#191c20"></circle>
+        <circle cx="50" cy="21" r="1.6" fill="#9aa0a6"></circle>
+        <rect class="lamp-r" x="30" y="1" width="7" height="3.5" rx="1"></rect>
+        <rect class="lamp-b" x="38" y="1" width="7" height="3.5" rx="1"></rect>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-12 col-md-4">
+    <div class="plate-card shadow-sm h-100 p-3 fade-rise">
+      <div class="stat-icon icon-total">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2h6a1 1 0 0 1 1 1v2H8V3a1 1 0 0 1 1-1Z"></path><rect x="5" y="4" width="14" height="18" rx="2"></rect><path d="M9 12h6M9 16h6"></path></svg>
+      </div>
+      <div class="stat-value" data-count-to="{{ total }}">0</div>
+      <div class="stat-label">Total Challans</div>
+    </div>
+  </div>
+
+  <div class="col-12 col-md-4">
+    <div class="plate-card shadow-sm h-100 p-3 fade-rise">
+      <div class="stat-icon icon-paid">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.4 8.7 8 11 4.6-2.3 8-6 8-11V5l-8-3Z"></path><path d="m9 12 2 2 4-4"></path></svg>
+      </div>
+      <div class="stat-value text-success-emphasis" data-count-to="{{ paid }}">0</div>
+      <div class="stat-label">Paid</div>
+    </div>
+  </div>
+
+  <div class="col-12 col-md-4">
+    <div class="plate-card shadow-sm h-100 p-3 fade-rise">
+      <div class="stat-icon icon-unpaid">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a1.9 1.9 0 0 0 1.6 2.9h17.2a1.9 1.9 0 0 0 1.6-2.9L13.7 3.9a1.9 1.9 0 0 0-3.4 0Z"></path><path d="M12 9v4M12 17h.01"></path></svg>
+      </div>
+      <div class="stat-value" data-count-to="{{ unpaid }}">0</div>
+      <div class="stat-label">Unpaid</div>
+    </div>
+  </div>
+</div>
+
+<div class="mt-4 fade-rise">
+  <div class="card card-citation shadow-sm">
+    <div class="card-body">
+      <h5 class="mb-1">Shortcuts</h5>
+      <div class="text-muted mb-3" style="font-size:0.9rem;">Issue a new citation or pull up violation history.</div>
+      <div class="d-flex flex-wrap gap-2">
+        <a class="btn btn-primary" href="{{ url_for('add_violation') }}">+ Add Violation</a>
+        <a class="btn btn-outline-primary" href="{{ url_for('view_violations') }}">View / Search History</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

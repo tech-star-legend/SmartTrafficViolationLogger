@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block title %}Violation History · Traffic Violation Logger{% endblock %}
+
+{% block content %}
+<div class="section-eyebrow mb-2 fade-rise">Records</div>
+<h2 class="mb-4 fade-rise">Violation History</h2>
+
+<div class="row g-3">
+  <div class="col-12 col-lg-4">
+    <div class="card shadow-sm fade-rise" style="position: sticky; top: 1rem;">
+      <div class="card-body">
+        <h5 class="mb-3">Search / Filter</h5>
+        <form method="get" class="row g-3">
+          <div class="col-12">
+            <label class="form-label">Vehicle Number</label>
+            <input name="vehicle_no" class="form-control mono" placeholder="e.g., MH12AB1234" value="{{ filters.vehicle_no or '' }}" />
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Status</label>
+            <select name="status" class="form-select">
+              <option value="" {% if not filters.status %}selected{% endif %}>Any</option>
+              <option value="Unpaid" {% if filters.status=='Unpaid' %}selected{% endif %}>Unpaid</option>
+              <option value="Paid" {% if filters.status=='Paid' %}selected{% endif %}>Paid</option>
+            </select>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Violation Type Contains</label>
+            <input name="violation_type" class="form-control" placeholder="e.g., Helmet" value="{{ filters.violation_type or '' }}" />
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Date From</label>
+            <input type="date" name="date_from" class="form-control" value="{{ filters.date_from or '' }}" />
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Date To</label>
+            <input type="date" name="date_to" class="form-control" value="{{ filters.date_to or '' }}" />
+          </div>
+
+          <div class="col-12 d-flex gap-2 justify-content-end">
+            <a href="{{ url_for('view_violations') }}" class="btn btn-outline-secondary">Reset</a>
+            <button class="btn btn-primary" type="submit">Search</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-lg-8">
+    <div class="card shadow-sm fade-rise">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <h5 class="mb-0">Results</h5>
+          <span class="text-muted" style="font-size: 0.85rem;">{{ violations|length }} record(s)</span>
+        </div>
+
+        {% if violations %}
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead>
+                <tr>
+                  <th>Challan</th>
+                  <th>Vehicle</th>
+                  <th>Type</th>
+                  <th>Date</th>
+                  <th>Location</th>
+                  <th>Fine</th>
+                  <th>Status</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for v in violations %}
+                  <tr>
+                    <td class="mono">{{ v.challan_no }}</td>
+                    <td class="mono">{{ v.vehicle_no }}</td>
+                    <td>{{ v.violation_type }}</td>
+                    <td>{{ v.violation_date.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ v.location }}</td>
+                    <td>{{ '₹%.2f'|format(v.fine_amount) }}</td>
+                    <td>
+                      {% if v.status=='Paid' %}
+                        <span class="stamp stamp-paid" style="padding:0.15rem 0.5rem; font-size:0.7rem;">Paid</span>
+                      {% else %}
+                        <span class="stamp stamp-unpaid" style="padding:0.15rem 0.5rem; font-size:0.7rem;">Unpaid</span>
+                      {% endif %}
+                    </td>
+                    <td class="text-end">
+                      <a class="btn btn-sm btn-outline-primary" href="{{ url_for('challan', challan_no=v.challan_no) }}">View Challan</a>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <div class="text-center py-5">
+            <div class="section-eyebrow mb-2">No matches</div>
+            <div class="text-muted">No records found. Try searching by vehicle number, or clear the filters.</div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

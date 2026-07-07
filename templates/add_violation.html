@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Add Violation · Traffic Violation Logger{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-md-8 col-lg-7">
+    <div class="section-eyebrow text-center mb-2 fade-rise">New Citation</div>
+    <div class="card card-citation card-clip shadow-sm mt-3 fade-rise">
+      <div class="card-body p-4">
+        <h4 class="mb-1">Add Violation Record</h4>
+        <div class="text-muted mb-3" style="font-size:0.9rem;">Fill in the details exactly as observed on-site.</div>
+
+        <form method="post" class="row g-3">
+          <div class="col-12">
+            <label class="form-label">Vehicle Number</label>
+            <input name="vehicle_no" class="form-control mono" required placeholder="e.g., MH12AB1234" />
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Violation Type</label>
+            <input name="violation_type" class="form-control" required placeholder="e.g., No Helmet, Overspeeding" />
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Location</label>
+            <input name="location" class="form-control" required placeholder="e.g., Andheri West" />
+          </div>
+
+          <div class="col-12 col-md-6">
+            <label class="form-label">Date</label>
+            <input type="date" name="violation_date" class="form-control" required />
+          </div>
+
+          <div class="col-12 col-md-6">
+            <label class="form-label">Fine Amount (₹)</label>
+            <input name="fine_amount" type="number" step="0.01" class="form-control" required placeholder="e.g., 500" />
+          </div>
+
+          <div class="col-12 d-flex gap-2 justify-content-end mt-2">
+            <a href="{{ url_for('view_violations') }}" class="btn btn-outline-secondary">Cancel</a>
+            <button class="btn btn-primary" type="submit">Generate Challan</button>
+          </div>
+        </form>
+
+        <p class="text-muted mt-3 mb-0" style="font-size: 0.85rem;">
+          Note: new records are automatically marked as <span class="stamp stamp-unpaid" style="padding:0.1rem 0.4rem; font-size:0.65rem;">Unpaid</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

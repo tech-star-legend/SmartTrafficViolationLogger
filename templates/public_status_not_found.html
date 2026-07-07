@@ -1,0 +1,23 @@
+{% extends "base_public.html" %}
+{% block title %}Challan Not Found{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-md-8 col-lg-6">
+    <div class="barrier mb-4 fade-rise"></div>
+
+    <div class="card shadow-sm fade-rise">
+      <div class="card-body p-4 text-center">
+        <div class="section-eyebrow mb-2">Lookup Failed</div>
+        <h3 class="mb-2">Challan Not Found</h3>
+        <div class="text-muted mb-1">We couldn't find a record for:</div>
+        <div class="challan-id d-inline-block mb-3">{{ challan_no }}</div>
+        <div class="text-muted mb-4" style="font-size: 0.9rem;">
+          Double-check the challan number, or the code may belong to an older / test entry.
+        </div>
+        <a class="btn btn-primary" href="{{ url_for('view_violations') }}">Go to Search</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

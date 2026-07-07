@@ -1,0 +1,55 @@
+{% extends "base_public.html" %}
+{% block title %}Challan {{ violation.challan_no }} · Status{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-md-8 col-lg-6">
+    <div class="section-eyebrow text-center mb-2 fade-rise">Public Verification</div>
+
+    <div class="card card-citation shadow-sm fade-rise">
+      <div class="card-body p-4 text-center">
+        <div class="d-flex align-items-center justify-content-center gap-2 flex-wrap mb-1">
+          <span class="text-muted">Challan:</span>
+          <span class="challan-id">{{ violation.challan_no }}</span>
+        </div>
+        <h3 class="mb-3">Violation Status</h3>
+
+        <div class="mb-3">
+          {% if violation.status=='Paid' %}
+            <span class="stamp stamp-paid fs-5">✓ Paid</span>
+          {% else %}
+            <span class="stamp stamp-unpaid fs-5">! Unpaid</span>
+          {% endif %}
+        </div>
+
+        <ul class="list-group list-group-flush text-start">
+          <li class="list-group-item d-flex justify-content-between">
+            <span class="text-muted">Vehicle</span>
+            <span class="mono fw-bold">{{ violation.vehicle_no }}</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            <span class="text-muted">Violation</span>
+            <span>{{ violation.violation_type }}</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            <span class="text-muted">Location</span>
+            <span>{{ violation.location }}</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            <span class="text-muted">Date</span>
+            <span>{{ violation.violation_date.strftime('%Y-%m-%d') }}</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            <span class="text-muted">Fine</span>
+            <span class="fw-bold">{{ '₹%.2f'|format(violation.fine_amount) }}</span>
+          </li>
+        </ul>
+
+        <div class="mt-4 text-muted" style="font-size: 0.82rem;">
+          This page is publicly accessible via QR code and reflects the latest status on record.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

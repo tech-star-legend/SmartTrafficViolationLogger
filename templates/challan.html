@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}Challan {{ violation.challan_no }} · Traffic Violation Logger{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-lg-9">
+
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3 fade-rise">
+      <div class="section-eyebrow">Official Digital Challan</div>
+      {% if violation.status=='Paid' %}
+        <span class="stamp stamp-paid">✓ Paid</span>
+      {% else %}
+        <span class="stamp stamp-unpaid">! Unpaid</span>
+      {% endif %}
+    </div>
+
+    <div class="ticket-wrap fade-rise">
+      <div class="ticket-main">
+        <div class="d-flex align-items-start justify-content-between gap-3 flex-wrap">
+          <div>
+            <h3 class="mb-1">Traffic Violation Challan</h3>
+            <div class="text-muted d-flex align-items-center gap-2 flex-wrap">
+              <span>Challan No:</span>
+              <span class="challan-id">{{ violation.challan_no }}</span>
+              <button type="button" class="btn btn-sm btn-outline-secondary copy-btn" data-copy-value="{{ violation.challan_no }}">Copy</button>
+            </div>
+          </div>
+          <div class="text-muted text-end" style="font-size: 0.85rem;">
+            Issued: {{ violation.created_at.strftime('%Y-%m-%d %H:%M') }}
+          </div>
+        </div>
+
+        <hr />
+
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item d-flex justify-content-between">
+            <span class="text-muted">Vehicle Number</span>
+            <span class="mono fw-bold">{{ violation.vehicle_no }}</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            <span class="text-muted">Violation Type</span>
+            <span class="fw-semibold">{{ violation.violation_type }}</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            <span class="text-muted">Location</span>
+            <span>{{ violation.location }}</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            <span class="text-muted">Date</span>
+            <span>{{ violation.violation_date.strftime('%Y-%m-%d') }}</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            <span class="text-muted">Fine Amount</span>
+            <span class="fw-bold">{{ '₹%.2f'|format(violation.fine_amount) }}</span>
+          </li>
+        </ul>
+
+        <hr />
+
+        <h6 class="section-eyebrow mb-3">Update Payment Status</h6>
+        <form method="post" action="{{ url_for('update_violation', challan_no=violation.challan_no) }}" class="row g-2 align-items-end">
+          <div class="col-12 col-md-5">
+            <label class="form-label">Status</label>
+            <select name="status" class="form-select" required>
+              <option value="Unpaid" {% if violation.status=='Unpaid' %}selected{% endif %}>Unpaid</option>
+              <option value="Paid" {% if violation.status=='Paid' %}selected{% endif %}>Paid</option>
+            </select>
+          </div>
+          <div class="col-12 col-md-7 text-md-end">
+            <button class="btn btn-primary" type="submit">Update Status</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="ticket-perforation d-none d-md-block"></div>
+
+      <div class="ticket-stub">
+        <div class="section-eyebrow text-white-50 mb-2">Scan to verify</div>
+        <div class="qr-frame mb-2">
+          <img style="width: 180px; height: 180px; object-fit: contain; display:block;" src="{{ url_for('qr', challan_no=violation.challan_no) }}" alt="QR Code for challan {{ violation.challan_no }}" />
+        </div>
+        <div class="text-white-50" style="font-size: 0.82rem;">
+          Anyone can scan this code to view the live payment status of this challan.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
